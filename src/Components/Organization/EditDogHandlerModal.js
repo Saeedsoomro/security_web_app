@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Box,
@@ -11,13 +11,7 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const DogHandlerModal = ({
-  open,
-  handleClose,
-  isEdit,
-  dogHandler,
-  getList,
-}) => {
+const EditDogHandlerModal = ({ open, handleClose, dogHandler, getList }) => {
   const [loading, setLoading] = useState(false);
   const {
     handleSubmit,
@@ -43,8 +37,11 @@ const DogHandlerModal = ({
       },
     };
     try {
-      const { data } = await axios.post("/api/v1/dogHandler/create", formData);
-      toast.success("dog handler  has been added!");
+      const { data } = await axios.put(
+        `/api/v1/dogHandler/update/${dogHandler._id}`,
+        formData
+      );
+      toast.success("dog handler  has been updated!");
       reset();
       getList();
       handleClose();
@@ -56,6 +53,22 @@ const DogHandlerModal = ({
     }
   };
 
+  useEffect(() => {
+    // Set default values only when dogHandler is available
+    if (dogHandler) {
+      reset({
+        dogHandlerName: dogHandler.name || "",
+        dogHandlerEmail: dogHandler.email || "",
+        dogHandlerAddress: dogHandler.address || "",
+        dogHandlerPostalCode: dogHandler.postalCode || "",
+        dogHandlerProvince: dogHandler.province || "",
+        dogHandlerCity: dogHandler.city || "",
+        reporterName: dogHandler.reporter?.name || "",
+        reporterEmail: dogHandler.reporter?.email || "",
+        reporterNumber: dogHandler.reporter?.phoneNumber || "",
+      });
+    }
+  }, [dogHandler, reset]);
   return (
     <div>
       <Modal
@@ -84,7 +97,7 @@ const DogHandlerModal = ({
             fontWeight={700}
             style={{ marginBottom: "16px" }}
           >
-            Add Information
+            Edit Dog handler
           </Typography>
           <Divider />
           <Box
@@ -119,6 +132,7 @@ const DogHandlerModal = ({
               <Controller
                 name="dogHandlerEmail"
                 control={control}
+                disabled
                 defaultValue={dogHandler?.email || ""}
                 rules={{ required: true }}
                 render={({ field }) => (
@@ -301,4 +315,4 @@ const DogHandlerModal = ({
   );
 };
 
-export default DogHandlerModal;
+export default EditDogHandlerModal;
