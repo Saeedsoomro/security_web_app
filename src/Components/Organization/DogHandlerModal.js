@@ -18,7 +18,7 @@ const DogHandlerModal = ({ open, handleClose }) => {
 
   const onSubmit = (data) => {
     console.log(data); // Handle form submission
-    handleClose();
+    // handleClose();
   };
 
   return (

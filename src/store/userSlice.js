@@ -11,9 +11,10 @@ const initialState = {
 // Thunk function for user login
 export const loginUser = createAsyncThunk(
   "user/login",
-  async (userData, { rejectWithValue }) => {
+  async (userData, { rejectWithValue, dispatch }) => {
     try {
       const response = await axios.post("/api/v1/login", userData); // Call your login API function
+      dispatch(getUser());
       return response.data; // Assuming the API returns user data upon successful login
     } catch (error) {
       return rejectWithValue(error.response.data); // Pass error message to reducer

@@ -12,6 +12,7 @@ import {
   ListItemText,
   Hidden,
   Link,
+  Avatar,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -34,12 +35,24 @@ const Navbar = () => {
     setMenuOpen(!isMenuOpen);
   };
 
-  const menuItems = [
-    { text: "Home", link: "/" },
-    { text: "Security Guards", link: "/organization" },
-    { text: "Security Services", link: "/securityareas" },
-    { text: "Dashboard", link: "/dashboard" },
-  ];
+  let menuItems;
+
+  if (user) {
+    menuItems = [
+      { text: "Home", link: "/" },
+      { text: "Security Guards", link: "/organization" },
+      { text: "Security Services", link: "/securityareas" },
+      { text: "Dashboard", link: "/dashboard" },
+    ];
+  } else {
+    menuItems = [
+      { text: "Home", link: "/" },
+      // { text: "Security Guards", link: "/organization" },
+      // { text: "Security Services", link: "/securityareas" },
+      // { text: "Dashboard", link: "/dashboard" },
+    ];
+  }
+
   function handleLogout() {
     dispatch(logoutUser());
   }
@@ -197,8 +210,13 @@ const Navbar = () => {
           </Hidden>
           <Hidden smDown>
             {user ? (
-              <Box>
-                <Button variant="contained" onClick={handleLogout}>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <Button variant="text" onClick={handleLogout}>
+                  {user?.name}
+                </Button>
+
+                <Avatar />
+                <Button variant="outlined" onClick={handleLogout}>
                   Logout
                 </Button>
               </Box>

@@ -3,9 +3,11 @@ import { Grid, Button, Typography, Paper, Box } from "@material-ui/core";
 import { display } from "@mui/system";
 import { Container } from "@mui/material";
 import InformationModal from "./InformationModal";
+import DogHandlerModal from "./DogHandlerModal";
 
 const OrganizationBox = () => {
   const [open, setOpen] = useState(false);
+  const [openDogHandlerModal, setOpenDogHandlerModal] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -13,6 +15,14 @@ const OrganizationBox = () => {
 
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const handleDgHanlerModalClose = () => {
+    setOpenDogHandlerModal(false);
+  };
+
+  const handleDgHanlerModalOpen = () => {
+    setOpenDogHandlerModal(true);
   };
 
   const array = [
@@ -182,12 +192,12 @@ const OrganizationBox = () => {
                   variant="contained"
                   color="primary"
                   style={{ marginRight: "1vmax" }}
-                  onClick={handleOpen}
+                  onClick={handleDgHanlerModalOpen}
                 >
                   Add
                 </Button>
                 <Button
-                  onClick={handleOpen}
+                  onClick={handleDgHanlerModalOpen}
                   variant="contained"
                   color="primary"
                 >
@@ -219,7 +229,11 @@ const OrganizationBox = () => {
             </Box>
           </Box>
         </Grid>
-        <InformationModal open={open} handleClose={handleClose} />
+        <DogHandlerModal
+          open={openDogHandlerModal}
+          handleClose={handleDgHanlerModalClose}
+        />
+        <DogHandlerModal open={open} handleClose={handleClose} />
       </Grid>
     </Container>
   );
