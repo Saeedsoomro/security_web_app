@@ -15,7 +15,7 @@ const Home = () => {
       <EmailComponent />
       <OfferComponenet />
       <Testimonials />
-      <WhyChoose />
+      {/* <WhyChoose /> */}
       <Card />
       <Location />
       <SecurityServices />

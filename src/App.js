@@ -18,6 +18,8 @@ import Testimonials from "./Components/Testimonials";
 import InformationModal from "./Components/SecurityAreas/ObjectFormModal";
 import Layout from "./layout/Layout";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -66,6 +68,7 @@ function App() {
           />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -16,11 +16,15 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, logoutUser } from "../../store/userSlice";
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-
   const navigate = useNavigate();
+
+  const { user, error, loading } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
 
   const handleLoginClick = () => {
     navigate("/login"); // Navigate to the login page
@@ -36,6 +40,13 @@ const Navbar = () => {
     { text: "Security Services", link: "/securityareas" },
     { text: "Dashboard", link: "/dashboard" },
   ];
+  function handleLogout() {
+    dispatch(logoutUser());
+  }
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
+  useEffect(() => {}, [user]);
 
   return (
     <>
@@ -124,16 +135,32 @@ const Navbar = () => {
                     </Link>
                   </ListItem>
                 ))}
-                <ListItem onClick={toggleMenu}>
-                  <Button sx={{ width: "150px" }} variant="contained">
-                    Login
-                  </Button>
-                </ListItem>
-                <ListItem onClick={toggleMenu}>
-                  <Button sx={{ width: "150px" }} variant="contained">
-                    Register
-                  </Button>
-                </ListItem>
+                {user ? (
+                  <>
+                    <ListItem onClick={toggleMenu}>
+                      <Button
+                        onClick={handleLogout}
+                        sx={{ width: "150px" }}
+                        variant="contained"
+                      >
+                        logout
+                      </Button>
+                    </ListItem>
+                  </>
+                ) : (
+                  <>
+                    <ListItem onClick={toggleMenu}>
+                      <Button sx={{ width: "150px" }} variant="contained">
+                        Login
+                      </Button>
+                    </ListItem>
+                    <ListItem onClick={toggleMenu}>
+                      <Button sx={{ width: "150px" }} variant="contained">
+                        Register
+                      </Button>
+                    </ListItem>
+                  </>
+                )}
               </List>
             </Drawer>
           </Hidden>
@@ -169,18 +196,26 @@ const Navbar = () => {
             </Box>
           </Hidden>
           <Hidden smDown>
-            <Box>
-              <Button
-                onClick={() => {
-                  handleLoginClick();
-                }}
-                variant="contained"
-                style={{ marginRight: "10px" }}
-              >
-                Login
-              </Button>
-              <Button variant="contained">Register</Button>
-            </Box>
+            {user ? (
+              <Box>
+                <Button variant="contained" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </Box>
+            ) : (
+              <Box>
+                <Button
+                  onClick={() => {
+                    handleLoginClick();
+                  }}
+                  variant="contained"
+                  style={{ marginRight: "10px" }}
+                >
+                  Login
+                </Button>
+                <Button variant="contained">Register</Button>
+              </Box>
+            )}
           </Hidden>
           <Hidden mdUp>
             <IconButton

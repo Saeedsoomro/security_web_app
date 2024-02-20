@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUserAPI, signupUserAPI } from "./api"; // Import your API functions
+
 import axios from "axios";
 
 const initialState = {
@@ -13,7 +13,7 @@ export const loginUser = createAsyncThunk(
   "user/login",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/v1/login"); // Call your login API function
+      const response = await axios.post("/api/v1/login", userData); // Call your login API function
       return response.data; // Assuming the API returns user data upon successful login
     } catch (error) {
       return rejectWithValue(error.response.data); // Pass error message to reducer
@@ -26,7 +26,29 @@ export const signupUser = createAsyncThunk(
   "user/signup",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/v1/register"); // Call your signup API function
+      const response = await axios.post("/api/v1/register", userData); // Call your signup API function
+      return response.data; // Assuming the API returns user data upon successful signup
+    } catch (error) {
+      return rejectWithValue(error.response.data); // Pass error message to reducer
+    }
+  }
+);
+export const getUser = createAsyncThunk(
+  "user/getUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("/api/v1/me"); // Call your signup API function
+      return response.data; // Assuming the API returns user data upon successful signup
+    } catch (error) {
+      return rejectWithValue(error.response.data); // Pass error message to reducer
+    }
+  }
+);
+export const logoutUser = createAsyncThunk(
+  "user/logoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("/api/v1/logout"); // Call your signup API function
       return response.data; // Assuming the API returns user data upon successful signup
     } catch (error) {
       return rejectWithValue(error.response.data); // Pass error message to reducer
@@ -46,7 +68,6 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -58,9 +79,32 @@ export const userSlice = createSlice({
       })
       .addCase(signupUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
       })
       .addCase(signupUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = null;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
