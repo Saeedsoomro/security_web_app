@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
 import axios from "axios";
 import EditDogHandlerModal from "./EditDogHandlerModal";
+import EditInformationModal from "./EditInformationModal";
 
 const OrganizationBox = () => {
   const [open, setOpen] = useState(false);
@@ -80,8 +81,23 @@ const OrganizationBox = () => {
       console.log(error);
     }
   }
+
+  async function getAllOrganization() {
+    try {
+      const { data } = await axios.get(
+        "/api/v1/organization/getAllOrganizations"
+      );
+      console.log(data);
+      setdogHandlerList(data);
+    } catch (error) {
+      toast.error(error.response.data?.message);
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     getDogHandlerList();
+    getAllOrganization();
   }, []);
 
   return (
@@ -296,7 +312,8 @@ const OrganizationBox = () => {
           open={openEditDogHandlerModal}
           handleClose={handleEditDgHanlerModalClose}
         />
-        {/* <DogHandlerModal  open={open} handleClose={handleClose} /> */}
+        <InformationModal open={open} handleClose={handleClose} />
+        <EditInformationModal open={open} handleClose={handleClose} />
       </Grid>
     </Container>
   );

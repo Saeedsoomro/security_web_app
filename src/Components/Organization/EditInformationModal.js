@@ -11,7 +11,7 @@ import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const InformationModal = ({ open, handleClose }) => {
+const EditInformationModal = ({ open, handleClose }) => {
   const [loading, setLoading] = useState(false);
   const {
     handleSubmit,
@@ -23,7 +23,7 @@ const InformationModal = ({ open, handleClose }) => {
   const onSubmit = async (data) => {
     const formData = {
       name: data.organizationName,
-      // organizationId: "65d50f062d04677868e3bbf4",
+      organizationId: "65d5fc2188fa9111608e84a1",
       email: data.organizationEmail,
       address: data.organizationAddress,
       postalCode: data.organizationPostalCode,
@@ -31,7 +31,10 @@ const InformationModal = ({ open, handleClose }) => {
       city: data.organizationCity,
     };
     try {
-      const { data } = await axios.post("/api/v1/organization/add", formData);
+      const { data } = await axios.post(
+        `/organization/updateOrganization/65d5fc2188fa9111608e84a1`,
+        formData
+      );
       toast.success("organization has been added!");
       reset();
       // getList();
@@ -293,4 +296,4 @@ const InformationModal = ({ open, handleClose }) => {
   );
 };
 
-export default InformationModal;
+export default EditInformationModal;

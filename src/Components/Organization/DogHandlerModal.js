@@ -44,7 +44,7 @@ const DogHandlerModal = ({
     };
     try {
       const { data } = await axios.post("/api/v1/dogHandler/create", formData);
-      toast.success("dog handler  has been added!");
+      toast.success("dog handler has been added!");
       reset();
       getList();
       handleClose();
