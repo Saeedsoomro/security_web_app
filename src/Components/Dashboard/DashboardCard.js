@@ -18,10 +18,13 @@ import {
 } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import { Checkbox, Container } from "@mui/material";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useForm, Controller } from "react-hook-form";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const DashboardCard = () => {
+const DashboardCard = (getList, report) => {
   const array = [
     { name: "Organization 1" },
     { name: "Organization 2" },
@@ -33,12 +36,15 @@ const DashboardCard = () => {
   const [organization, setOrganization] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [openNewModal, setOpenNewModal] = useState(false);
-  const [formData, setFormData] = useState({
-    dropdownValue: "",
-    information: "",
-    additionalInformation: "",
-    images: [],
-  });
+
+  const [loading, setLoading] = useState(false);
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const handleAddOrganization = () => {
     // Check if organization is already added
@@ -63,24 +69,86 @@ const DashboardCard = () => {
     setOpenNewModal(false);
   };
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    setFormData({
-      ...formData,
-      images: files,
-    });
-  };
+  // const handleImageUpload = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   setFormData({
+  //     ...formData,
+  //     images: files,
+  //   });
+  // };
 
   const handleNext = () => {
     handleCloseModal();
     handleOpenNewModal();
+  };
+
+  const onSubmitSave = async (data) => {
+    const formData = {
+      name: "John Doe",
+      searchArea: "65d4608c15d0060edc07695d",
+      geoTag: "geo_tag_value",
+      checkedItems: [
+        {
+          information: data.reportInfo,
+          additionalInfo: data.reportAddInfo,
+          imageUrl: "image_url_1",
+        },
+      ],
+      dogHandler: "65d4608c15d0060edc07695d",
+      signed: "signed_value",
+      organizationLogo: "organization_logo_url",
+      isSend: false,
+      createdAt: new Date(),
+    };
+    try {
+      const { data } = await axios.post("/api/v1/reports", formData);
+      toast.success("Report has been Added");
+      reset();
+      // getList();
+      handleNext();
+      handleCloseModal();
+      // setLoading(false);
+    } catch (error) {
+      toast.error(error.response.data?.message);
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const onSubmitSend = async (data) => {
+    const formData = {
+      name: "John Doe",
+      searchArea: "65d4608c15d0060edc07695d",
+      geoTag: "geo_tag_value",
+      checkedItems: [
+        {
+          information: data.reportInfo,
+          additionalInfo: data.reportAddInfo,
+          imageUrl: "image_url_1",
+        },
+      ],
+      dogHandler: "65d4608c15d0060edc07695d",
+      signed: "signed_value",
+      organizationLogo: "organization_logo_url",
+      isSend: true,
+      createdAt: new Date(),
+    };
+    try {
+      const { data } = await axios.put(
+        "/api/v1/reports/65d7c1d673165e013cb60711",
+        formData
+      );
+      toast.success("Report has been Added");
+      reset();
+      // getList();
+      handleNext();
+      handleCloseModal();
+      // setLoading(false);
+    } catch (error) {
+      toast.error(error.response.data?.message);
+      setLoading(false);
+      console.log(error);
+    }
   };
 
   return (
@@ -176,8 +244,8 @@ const DashboardCard = () => {
               select
               label="Dropdown Menu"
               name="dropdownValue"
-              value={formData.dropdownValue}
-              onChange={handleInputChange}
+              // value={formData.dropdownValue}
+              // onChange={handleInputChange}
               fullWidth
               margin="normal"
             >
@@ -185,28 +253,53 @@ const DashboardCard = () => {
               <MenuItem value="Option 2">Option 2</MenuItem>
               <MenuItem value="Option 3">Option 3</MenuItem>
             </TextField>
-            <TextField
-              label="Information"
-              name="information"
-              value={formData.information}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
+            <Controller
+              name="reportInfo"
+              control={control}
+              // defaultValue={reportInfo?.name || ""}
+              defaultValue={""}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="information"
+                  variant="outlined"
+                  fullWidth
+                  // error={errors.reportInfoName ? true : false}
+                  // helperText={
+                  //   errors.reporteInfoName ? "Information is required" : ""
+                  // }
+                  style={{ marginBottom: "16px" }}
+                />
+              )}
             />
-            <TextField
-              label="Additional Information"
-              name="additionalInformation"
-              value={formData.additionalInformation}
-              onChange={handleInputChange}
-              fullWidth
-              multiline
-              rows={4}
-              margin="normal"
+            <Controller
+              name="reportAddInfo"
+              control={control}
+              // defaultValue={reportInfo?.name || ""}
+              defaultValue={""}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Additional Information"
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  margin="normal"
+                  // error={errors.reportInfoName ? true : false}
+                  // helperText={
+                  //   errors.reporteInfoName ? "Information is required" : ""
+                  // }
+                  style={{ marginBottom: "16px" }}
+                />
+              )}
             />
             {/* Add images button */}
-            <input type="file" onChange={handleImageUpload} multiple />
+            <input type="file" multiple />
             {/* Display uploaded images */}
-            <List>
+            {/* <List>
               {formData.images.map((image, index) => (
                 <ListItem key={index}>
                   <ListItemText primary={image.name} />
@@ -217,7 +310,7 @@ const DashboardCard = () => {
                   </ListItemSecondaryAction>
                 </ListItem>
               ))}
-            </List>
+            </List> */}
             <Button variant="contained" color="primary" onClick={handleNext}>
               Next
             </Button>
@@ -260,14 +353,18 @@ const DashboardCard = () => {
                 marginTop: "1vmax",
               }}
             >
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit(onSubmitSave)}
+              >
                 Save Info
               </Button>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleCloseNewModal}
                 style={{ marginLeft: "1vmax" }}
+                onClick={handleSubmit(onSubmitSend)}
               >
                 Finish
               </Button>
