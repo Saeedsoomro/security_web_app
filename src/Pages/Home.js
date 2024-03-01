@@ -12,13 +12,13 @@ const Home = () => {
   return (
     <Fragment>
       <Hero />
-      <EmailComponent />
+      {/* <EmailComponent />
       <OfferComponenet />
-      <Testimonials />
+      <Testimonials /> */}
       {/* <WhyChoose /> */}
-      <Card />
+      {/* <Card />
       <Location />
-      <SecurityServices />
+      <SecurityServices /> */}
     </Fragment>
   );
 };

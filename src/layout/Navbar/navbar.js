@@ -84,7 +84,7 @@ const Navbar = () => {
             }}
           >
             <img
-              src="/securityLogo.png"
+              src="/DogHandlerLogo.png"
               alt="Logo"
               style={{
                 width: "150px", // Ensures the image width adjusts based on its container
@@ -167,11 +167,11 @@ const Navbar = () => {
                         Login
                       </Button>
                     </ListItem>
-                    <ListItem onClick={toggleMenu}>
+                    {/* <ListItem onClick={toggleMenu}>
                       <Button sx={{ width: "150px" }} variant="contained">
                         Register
                       </Button>
-                    </ListItem>
+                    </ListItem> */}
                   </>
                 )}
               </List>
@@ -231,7 +231,7 @@ const Navbar = () => {
                 >
                   Login
                 </Button>
-                <Button variant="contained">Register</Button>
+                {/* <Button variant="contained">Register</Button> */}
               </Box>
             )}
           </Hidden>

@@ -68,10 +68,14 @@ const LoginSignup = () => {
     <>
       <div className="loginSignupComponent">
         <div className="loginSignupBox">
-          <div className="top-buttons">
+          {/* <div className="top-buttons">
             <p onClick={(e) => setPage("login")}>LOGIN</p>
             <p onClick={(e) => setPage("register")}>REGISTER</p>
+          </div> */}
+          <div style={{ display: "flex", justifyContent: "Center" }}>
+            <img src="/DogHandlerLogo.png" alt="Logo" style={{}} />
           </div>
+
           {page === "login" && (
             <form className="loginForm" onSubmit={handleLoginFunction}>
               <div>

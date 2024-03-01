@@ -64,8 +64,17 @@ const Hero = () => {
   };
 
   return (
-    <div style={{ width: "100%", backgroundImage: "url('security.png')" }}>
-      <Grid container spacing={3}>
+    <div
+      style={{
+        width: "100%",
+        backgroundImage: "url('security.png')",
+        height: "80vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Grid spacing={3}>
         {/* First Div */}
         <Grid item xs={12} sm={6}>
           <Paper
@@ -81,7 +90,7 @@ const Hero = () => {
             }}
           >
             <Typography variant="h3" gutterBottom>
-              Security Guards
+              K9 Report
             </Typography>
             <Typography variant="body1" sx={{ fontSize: "20px" }}>
               Meticulously screened and extensively trained security
@@ -92,7 +101,7 @@ const Hero = () => {
         </Grid>
 
         {/* Second Div */}
-        <Grid item xs={12} sm={6}>
+        {/* <Grid item xs={12} sm={6}>
           <Paper elevation={0} sx={{ p: 2, backgroundColor: "transparent" }}>
             <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
               GET A FREE QUOTE TODAY
@@ -178,7 +187,7 @@ const Hero = () => {
               </Grid>
             </Box>
           </Paper>
-        </Grid>
+        </Grid> */}
       </Grid>
     </div>
   );
