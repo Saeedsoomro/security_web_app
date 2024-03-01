@@ -93,9 +93,7 @@ const Hero = () => {
               K9 Report
             </Typography>
             <Typography variant="body1" sx={{ fontSize: "20px" }}>
-              Meticulously screened and extensively trained security
-              professionals adept at safeguarding businesses across diverse
-              sectors and events.
+              Specialsök med akrediterade sökhundar
             </Typography>
           </Paper>
         </Grid>
